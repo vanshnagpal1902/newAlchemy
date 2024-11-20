@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search by Skills - Alchemy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/search.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="/dashboard" class="brand">
+                <i class="ri-magic-line"></i>
+                <span>Alchemy</span>
+            </a>
+        </div>
+        <div class="nav-right">
+          
+            <a href="/profile" class="nav-link">
+                <i class="ri-user-line"></i> Profile
+            </a>
+        </div>
+    </nav>
+
+    <div class="search-container">
+        <div class="search-header">
+            <h1 class="search-title">Search Users by Skills</h1>
+            <form class="search-form" action="/search/skills" method="GET">
+                <div class="selected-skills-display" id="selectedSkillsDisplay"></div>
+
+                <select name="skills" class="search-select" multiple="multiple">
+                    <% allSkills.forEach(function(skill) { %>
+                        <option value="<%= skill %>" 
+                            <%= selectedSkills && selectedSkills.includes(skill) ? 'selected' : '' %>>
+                            <%= skill %>
+                        </option>
+                    <% }); %>
+                </select>
+
+                <select name="university" class="search-select">
+                    <option value="">Select University</option>
+                    <% universities.forEach(function(uni) { %>
+                        <option value="<%= uni %>" 
+                            <%= selectedUniversity === uni ? 'selected' : '' %>>
+                            <%= uni %>
+                        </option>
+                    <% }); %>
+                </select>
+
+                <button type="submit" class="search-btn">
+                    <i class="ri-search-line"></i>
+                    Search
+                </button>
+            </form>
+        </div>
+
+        <div class="results-section">
+            <% if (users && users.length > 0) { %>
+                <% users.forEach(function(user) { %>
+                    <div class="user-card">
+                        <div class="user-header">
+                            <div class="user-avatar">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            <div class="user-info">
+                                <h3><%= user.username %></h3>
+                                <div class="user-university">
+                                    <%= user.university || 'University not specified' %>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="skills-list">
+                            <% user.skills.forEach(function(skill) { %>
+                                <span class="skill-tag"><%= skill %></span>
+                            <% }); %>
+                        </div>
+
+                        <button onclick="location.href='/messages?userId=<%= user._id %>&username=<%= user.username %>'" 
+                                class="message-btn">
+                            <i class="ri-message-3-line"></i>
+                            Message
+                        </button>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <div class="no-results">
+                    <i class="ri-search-eye-line"></i>
+                    <p>No users found with the specified criteria.</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize skills select
+            $('.search-select[multiple]').select2({
+                placeholder: {
+                    id: '-1',
+                    text: "Select skills (you can select multiple)",
+                    selected: 'selected'
+                },
+                allowClear: true,
+                theme: "default",
+                width: '100%',
+                closeOnSelect: false,
+                containerCssClass: 'select2-container--custom',
+                dropdownCssClass: 'select2-dropdown--custom'
+            }).on('select2:select', function(e) {
+                // Add selected skill to display
+                addSelectedSkill(e.params.data.id);
+            }).on('select2:unselect', function(e) {
+                // Remove skill from display
+                removeSelectedSkill(e.params.data.id);
+            });
+
+            // Initialize university select
+            $('.search-select:not([multiple])').select2({
+                placeholder: "Select university",
+                allowClear: true,
+                theme: "default",
+                width: '100%'
+            });
+
+            // Add initial selected skills
+            $('.search-select[multiple] option:selected').each(function() {
+                addSelectedSkill($(this).val());
+            });
+        });
+
+        function addSelectedSkill(skill) {
+            const display = $('#selectedSkillsDisplay');
+            if (!display.find(`[data-skill="${skill}"]`).length) {
+                display.append(`
+                    <div class="selected-skill" data-skill="${skill}">
+                        ${skill}
+                        <i class="ri-close-line" onclick="removeSkill('${skill}')"></i>
+                    </div>
+                `);
+            }
+        }
+
+        function removeSelectedSkill(skill) {
+            $(`.selected-skill[data-skill="${skill}"]`).remove();
+        }
+
+        function removeSkill(skill) {
+            // Deselect from Select2
+            let select = $('.search-select[multiple]');
+            select.val((_, currentValue) => {
+                return currentValue.filter(value => value !== skill);
+            }).trigger('change');
+            
+            // Remove from display
+            removeSelectedSkill(skill);
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,474 @@
+:root {
+    --sailor-blue: #00203F;
+    --mint: #ADEFD1;
+    --light-mint: #e8f9f2;
+}
+
+.requests-container {
+    max-width: 1200px;
+    margin: 100px auto 30px;
+    padding: 0 30px;
+}
+
+.requests-header {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 32, 63, 0.1);
+    margin-bottom: 30px;
+}
+
+.requests-title {
+    color: var(--sailor-blue);
+    font-size: 2rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* Request Cards */
+.request-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+}
+
+.request-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 32, 63, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 25px;
+    margin-bottom: 20px;
+    position: relative;
+    padding-top: 30px;
+}
+
+.request-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 32, 63, 0.15);
+}
+
+.request-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--light-mint);
+}
+
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--light-mint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8em;
+    color: var(--sailor-blue);
+}
+
+.request-info h3 {
+    color: var(--sailor-blue);
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.project-title {
+    color: #666;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.position-title {
+    background: var(--light-mint);
+    color: var(--sailor-blue);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-block;
+    margin: 10px 0;
+}
+
+.request-content {
+    margin: 20px 0;
+}
+
+.content-section {
+    margin-bottom: 15px;
+}
+
+.content-section h4 {
+    color: var(--sailor-blue);
+    font-size: 1rem;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.content-section p {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.request-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid var(--light-mint);
+}
+
+.btn-accept, .btn-reject {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-accept {
+    background: var(--sailor-blue);
+    color: white;
+}
+
+.btn-accept:hover {
+    background: #003366;
+    transform: translateY(-2px);
+}
+
+.btn-reject {
+    background: var(--light-mint);
+    color: var(--sailor-blue);
+}
+
+.btn-reject:hover {
+    background: var(--mint);
+    transform: translateY(-2px);
+}
+
+.timestamp {
+    color: #888;
+    font-size: 0.85rem;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.no-requests {
+    text-align: center;
+    padding: 50px;
+    background: white;
+    border-radius: 15px;
+    color: #666;
+}
+
+.no-requests i {
+    font-size: 3em;
+    color: var(--sailor-blue);
+    margin-bottom: 15px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .requests-container {
+        padding: 0 15px;
+        margin-top: 80px;
+    }
+
+    .request-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .requests-title {
+        font-size: 1.5rem;
+    }
+
+    .request-card {
+        padding: 20px;
+    }
+}
+
+/* Add/Update these navbar styles */
+.navbar {
+    background: var(--sailor-blue);
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 32, 63, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.nav-left .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--mint);
+    font-size: 2.2rem;
+    font-weight: 600;
+}
+
+.nav-left .brand i {
+    font-size: 2.4rem;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-link {
+    color: var(--mint);
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-link i {
+    font-size: 1.3rem;
+}
+
+.nav-link:hover {
+    background: rgba(173, 239, 209, 0.1);
+    transform: translateY(-2px);
+}
+
+.nav-link.active {
+    background: var(--mint);
+    color: var(--sailor-blue);
+}
+
+/* Add these styles for request type indicators */
+.nav-link[href="/requests/received"].active {
+    background: var(--mint);
+    color: var(--sailor-blue);
+}
+
+.nav-link[href="/requests/sent"].active {
+    background: var(--mint);
+    color: var(--sailor-blue);
+}
+
+/* Adjust main content for fixed navbar */
+.requests-container {
+    margin-top: 100px;
+}
+
+/* Add/Update these styles for status badges */
+.request-status {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.request-status.pending {
+    background: var(--sailor-blue);
+    color: white;
+}
+
+.request-status.pending::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--mint);
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+.request-status.accepted {
+    background: #2ecc71;
+    color: white;
+}
+
+.request-status.accepted::before {
+    content: '✓';
+    font-weight: bold;
+}
+
+.request-status.rejected {
+    background: #e74c3c;
+    color: white;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Update/Add these styles for project application details */
+.request-details {
+    margin: 20px 0;
+    padding: 20px;
+    background: var(--light-mint);
+    border-radius: 12px;
+}
+
+.project-info {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(0, 32, 63, 0.1);
+}
+
+.project-info h3 {
+    color: var(--sailor-blue);
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.project-info h3 i {
+    color: var(--mint);
+    font-size: 1.4rem;
+}
+
+.position-applied {
+    display: inline-block;
+    background: var(--mint);
+    color: var(--sailor-blue);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin: 10px 0;
+}
+
+.application-details {
+    margin-top: 20px;
+}
+
+.detail-section {
+    margin-bottom: 20px;
+}
+
+.detail-section h4 {
+    color: var(--sailor-blue);
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.detail-section h4 i {
+    font-size: 1.2rem;
+    color: var(--sailor-blue);
+}
+
+.detail-section p {
+    color: #444;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 0;
+}
+
+.request-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 2px solid rgba(0, 32, 63, 0.1);
+}
+
+.request-date {
+    color: #666;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.request-date i {
+    color: var(--sailor-blue);
+}
+
+.request-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-accept, .btn-reject {
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+}
+
+.btn-accept {
+    background: var(--sailor-blue);
+    color: white;
+}
+
+.btn-accept:hover {
+    background: #003366;
+    transform: translateY(-2px);
+}
+
+.btn-reject {
+    background: var(--light-mint);
+    color: var(--sailor-blue);
+}
+
+.btn-reject:hover {
+    background: var(--mint);
+    transform: translateY(-2px);
+}
+.brand{
+    text-decoration: none;
+}

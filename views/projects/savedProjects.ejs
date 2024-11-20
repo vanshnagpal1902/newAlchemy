@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Projects - Alchemy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/savedProjects.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="/dashboard" class="brand">
+                <i class="ri-magic-line"></i>
+                <span>Alchemy</span>
+            </a>
+        </div>
+        <div class="nav-right">
+          
+            <a href="/projects/add" class="nav-link">
+                <i class="fas fa-plus-circle"></i> Add Project
+            </a>
+            <a href="/projects/your" class="nav-link">
+                <i class="fas fa-folder-open"></i> Your Projects
+            </a>
+            <a href="/projects/saved" class="nav-link active">
+                <i class="fas fa-bookmark"></i> Saved Projects
+            </a>
+        </div>
+    </nav>
+
+    <div class="projects-container">
+        <h2>Saved Projects</h2>
+        <div class="project-grid" id="projectsContainer">
+            <% if (projects.length === 0) { %>
+                <div class="no-projects">
+                    <p>No saved projects found</p>
+                    <a href="/dashboard" class="btn-primary">
+                        <i class="fas fa-search"></i>
+                        Explore Projects
+                    </a>
+                </div>
+            <% } else { %>
+                <% projects.forEach(function(project) { %>
+                    <% const isAdmin = project.author && user ? project.author._id === user.id : false; %>
+                    <div class="project-card">
+                        <img src="<%= project.image %>" alt="<%= project.title %>" class="project-image">
+                        <div class="project-info">
+                            <h3 class="project-title"><%= project.title %></h3>
+                            <div class="project-description">
+                                <%- truncateText(project.description, 150, 'project', project.title) %>
+                            </div>
+                            
+                            <div class="meta-info">
+                                <div class="meta-info-item">
+                                    <strong>Category</strong>
+                                    <span><%= project.category %></span>
+                                </div>
+                                <div class="meta-info-item">
+                                    <strong>Team Size</strong>
+                                    <span><%= project.teamSize %></span>
+                                </div>
+                                <div class="meta-info-item">
+                                    <strong>Admin</strong>
+                                    <span><%= project.adminName %></span>
+                                </div>
+                                <div class="meta-info-item">
+                                    <strong>University</strong>
+                                    <span><%= project.author ? project.author.university || 'Not specified' : 'Not specified' %></span>
+                                </div>
+                            </div>
+
+                            <div class="positions-section">
+                                <h4 class="positions-heading">
+                                    <i class="ri-team-line"></i> Open Positions
+                                </h4>
+                                <% project.positions.forEach(function(position) { %>
+                                    <div class="position-item">
+                                        <div class="position-info">
+                                            <strong><%= position.title %></strong>
+                                            <div class="position-description">
+                                                <%- truncateText(position.description, 100, 'position', position.title) %>
+                                            </div>
+                                        </div>
+                                        <% 
+                                            const hasApplied = user.applications && 
+                                                user.applications.some(app => 
+                                                    app.projectId === project._id.toString() && 
+                                                    app.positionTitle === position.title
+                                                );
+                                        %>
+                                        <% if (!isAdmin) { %>
+                                            <button 
+                                                onclick="handleApply('<%= project._id %>', '<%= position.title %>')" 
+                                                class="btn-apply <%= hasApplied ? 'applied' : '' %>"
+                                                <%= hasApplied ? 'disabled' : '' %>
+                                                data-project-id="<%= project._id %>"
+                                                data-position="<%= position.title %>"
+                                            >
+                                                <%= hasApplied ? 'Applied' : 'Apply' %>
+                                            </button>
+                                        <% } %>
+                                    </div>
+                                <% }); %>
+                            </div>
+
+                            <button onclick="sendProjectMessage('<%= project.author._id %>', '<%= project.adminName %>', '<%= project.title %>', '<%= project.positions.map(p => p.title).join(", ") %>')" 
+                                    class="message-admin-btn">
+                                <i class="ri-message-3-line"></i> Want to know more about the project and open positions?
+                            </button>
+
+                            <div class="project-footer">
+                                <span class="timestamp" data-timestamp="<%= project.createdAt %>">
+                                    <%= new Date(project.createdAt).toLocaleString() %>
+                                </span>
+                                <div class="card-actions">
+                                    <button onclick="toggleSaveProject('<%= project._id %>')" 
+                                            class="action-btn saved" 
+                                            title="Remove from saved">
+                                        <i class="fa-solid fa-bookmark"></i>
+                                    </button>
+                                    <button onclick="shareProject('<%= project._id %>', '<%= project.title %>')" 
+                                            class="action-btn" 
+                                            title="Share project">
+                                        <i class="fa-solid fa-share-nodes"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Application Modal -->
+    <div id="applicationModal" class="modal">
+        <div class="modal-content">
+            <button class="close" onclick="closeApplicationModal()">×</button>
+            <h2><i class="fas fa-paper-plane"></i> Apply for Position</h2>
+            <form id="applicationForm">
+                <input type="hidden" id="projectId" name="projectId">
+                <input type="hidden" id="positionTitleInput" name="positionTitle">
+                
+                <div class="form-group">
+                    <label for="reason">Why do you want to join this team? (250 words max)</label>
+                    <textarea 
+                        id="reason" 
+                        name="reason" 
+                        required 
+                        data-max-words="250"
+                        placeholder="Share your motivation for joining this project..."
+                        onkeyup="updateCharCount(this, 'reasonCount')"
+                    ></textarea>
+                    <div class="char-count" id="reasonCount">0/250 words</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="experience">What is your relevant experience? (250 words max)</label>
+                    <textarea 
+                        id="experience" 
+                        name="experience" 
+                        required
+                        data-max-words="250"
+                        placeholder="Describe your relevant skills and experience..."
+                        onkeyup="updateCharCount(this, 'experienceCount')"
+                    ></textarea>
+                    <div class="char-count" id="experienceCount">0/250 words</div>
+                </div>
+
+                <button type="submit">
+                    <i class="fas fa-paper-plane"></i>
+                    Submit Application
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>
+
+    <div class="description-modal" id="descriptionModal">
+        <div class="description-content">
+            <h3 id="modalTitle"></h3>
+            <div class="description-text" id="modalDescription"></div>
+            <button class="close-modal" onclick="closeDescriptionModal(this)">×</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize user data
+        const user = <%- JSON.stringify(user) %>;
+
+        // Function to show success popup
+        function showSuccessPopup(message) {
+            const popup = document.createElement('div');
+            popup.className = 'notification-popup success';
+            popup.innerHTML = `
+                <div class="popup-content">
+                    <i class="fas fa-check-circle"></i>
+                    <p>${message}</p>
+                </div>
+            `;
+            showPopup(popup);
+        }
+
+        // Function to show error popup
+        function showErrorPopup(message) {
+            const popup = document.createElement('div');
+            popup.className = 'notification-popup error';
+            popup.innerHTML = `
+                <div class="popup-content">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>${message}</p>
+                </div>
+            `;
+            showPopup(popup);
+        }
+
+        // Function to show popup
+        function showPopup(popup) {
+            // Remove any existing popups
+            const existingPopup = document.querySelector('.notification-popup');
+            if (existingPopup) {
+                existingPopup.remove();
+            }
+
+            document.body.appendChild(popup);
+            
+            // Trigger animation
+            requestAnimationFrame(() => {
+                popup.classList.add('show');
+            });
+
+            // Remove popup after delay
+            setTimeout(() => {
+                popup.classList.remove('show');
+                setTimeout(() => popup.remove(), 300);
+            }, 3000);
+        }
+
+        // Function to handle application
+        function handleApply(projectId, positionTitle) {
+            // Check if profile is completed
+            if (!user.profileCompleted) {
+                alert('Please complete your profile before applying for positions. Go to Profile page to complete your profile.');
+                return;
+            }
+
+            // Check if already applied
+            const hasApplied = user.applications && user.applications.some(app => 
+                app.projectId === projectId && app.positionTitle === positionTitle
+            );
+
+            if (hasApplied) {
+                alert('You have already applied for this position');
+                return;
+            }
+
+            // Show the modal and set the form values
+            const modal = document.getElementById('applicationModal');
+            document.getElementById('projectId').value = projectId;
+            document.getElementById('positionTitleInput').value = positionTitle;
+            modal.style.display = 'flex';
+        }
+
+        // Function to close modal
+        function closeApplicationModal() {
+            const modal = document.getElementById('applicationModal');
+            modal.style.display = 'none';
+            // Clear form
+            document.getElementById('applicationForm').reset();
+        }
+
+        // Function to update character count
+        function updateCharCount(element, counterId) {
+            if (!element) return false;
+            
+            const text = element.value || '';
+            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+            const maxWords = parseInt(element.getAttribute('data-max-words')) || 250;
+            const counter = document.getElementById(counterId);
+            
+            if (counter) {
+                counter.textContent = `${words}/${maxWords} words`;
+                counter.classList.toggle('limit', words >= maxWords * 0.9);
+            }
+
+            return words <= maxWords;
+        }
+
+        // Function to share project
+        function shareProject(projectId, title) {
+            const shareUrl = `${window.location.origin}/projects/${projectId}`;
+            const shareMessage = `🚀 *Exciting Project on Alchemy!*\n\n📌 *${title}*\n\n🔗 Check it out here:\n${shareUrl}\n\n#Alchemy #Collaboration #TeamProject`;
+            
+            // Create and show share modal
+            const modal = document.createElement('div');
+            modal.className = 'share-modal';
+            modal.innerHTML = `
+                <div class="share-content">
+                    <h3><i class="ri-share-forward-line"></i> Share Project</h3>
+                    <div class="share-buttons">
+                        <a href="https://wa.me/?text=${encodeURIComponent(shareMessage)}" 
+                           target="_blank" class="share-button whatsapp">
+                           <i class="ri-whatsapp-line"></i> Share on WhatsApp
+                        </a>
+                        <a href="mailto:?subject=${encodeURIComponent(`Check out this project on Alchemy: ${title}`)}&body=${encodeURIComponent(shareMessage)}" 
+                           class="share-button email">
+                           <i class="ri-mail-line"></i> Share via Email
+                        </a>
+                        <button onclick="copyProjectLink('${shareMessage}')" class="share-button copy">
+                           <i class="ri-file-copy-line"></i> Copy Link
+                        </button>
+                    </div>
+                    <button onclick="closeShareModal(this)" class="close-modal">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // Function to send project message
+        function sendProjectMessage(adminId, adminName, projectTitle, positions) {
+            try {
+                // Check if profile is completed
+                if (!user.profileCompleted) {
+                    alert('Please complete your profile before messaging. Go to Profile page to complete your profile.');
+                    return;
+                }
+
+                // Create a pre-written message about the project and positions
+                let message = `Hi, I want to know more about your project "${projectTitle}"`;
+                
+                // Add positions if they exist
+                if (positions) {
+                    message += `. I'm interested in learning about the open positions: ${positions}`;
+                }
+                
+                // Encode the message and username for the URL
+                const encodedMessage = encodeURIComponent(message);
+                const encodedUsername = encodeURIComponent(adminName);
+                
+                // Redirect to messages with the pre-written message
+                window.location.href = `/messages?userId=${adminId}&username=${encodedUsername}&message=${encodedMessage}`;
+            } catch (error) {
+                console.error('Error redirecting to messages:', error);
+                alert('Failed to open message window');
+            }
+        }
+
+        // Add form submission handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const applicationForm = document.getElementById('applicationForm');
+            if (applicationForm) {
+                applicationForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const reason = document.getElementById('reason');
+                    const experience = document.getElementById('experience');
+                    
+                    if (!reason || !experience) {
+                        showErrorPopup('Please fill in all required fields');
+                        return;
+                    }
+
+                    const projectId = document.getElementById('projectId').value;
+                    const positionTitle = document.getElementById('positionTitleInput').value;
+
+                    try {
+                        const response = await fetch('/requests/apply', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                projectId,
+                                positionTitle,
+                                reason: reason.value.trim(),
+                                experience: experience.value.trim()
+                            })
+                        });
+
+                        const data = await response.json();
+
+                        if (data.success) {
+                            // Update button state
+                            const applyButton = document.querySelector(`button[data-project-id="${projectId}"][data-position="${positionTitle}"]`);
+                            if (applyButton) {
+                                applyButton.textContent = 'Applied';
+                                applyButton.disabled = true;
+                                applyButton.classList.add('applied');
+                                applyButton.removeAttribute('onclick');
+                            }
+
+                            // Update session storage
+                            const savedUser = JSON.parse(sessionStorage.getItem('user')) || user;
+                            if (!savedUser.applications) {
+                                savedUser.applications = [];
+                            }
+                            savedUser.applications.push({
+                                projectId,
+                                positionTitle,
+                                appliedAt: new Date()
+                            });
+                            sessionStorage.setItem('user', JSON.stringify(savedUser));
+
+                            closeApplicationModal();
+                            showSuccessPopup('Application submitted successfully! 🎉');
+                        } else {
+                            showErrorPopup(data.error || 'Failed to submit application');
+                        }
+                    } catch (error) {
+                        console.error('Error submitting application:', error);
+                        showErrorPopup('Failed to submit application. Please try again.');
+                    }
+                });
+            }
+        });
+
+        // Function to check application status on page load
+        function checkApplicationStatus() {
+            const savedUser = JSON.parse(sessionStorage.getItem('user')) || user;
+            const applications = savedUser.applications || [];
+
+            document.querySelectorAll('.btn-apply').forEach(button => {
+                const projectId = button.getAttribute('data-project-id');
+                const positionTitle = button.getAttribute('data-position');
+
+                const hasApplied = applications.some(app => 
+                    app.projectId === projectId && 
+                    app.positionTitle === positionTitle
+                );
+
+                if (hasApplied) {
+                    button.textContent = 'Applied';
+                    button.disabled = true;
+                    button.classList.add('applied');
+                    button.removeAttribute('onclick');
+                }
+            });
+        }
+
+        // Function to handle saving project
+        async function toggleSaveProject(projectId) {
+            try {
+                const response = await fetch(`/projects/save/${projectId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    const popup = document.createElement('div');
+                    popup.className = 'notification-popup success';
+                    popup.innerHTML = `
+                        <div class="popup-content">
+                            <i class="fas fa-check-circle"></i>
+                            <p>${data.saved ? 'Project saved successfully! 🎉' : 'Project removed from saved! 📝'}</p>
+                        </div>
+                    `;
+                    document.body.appendChild(popup);
+
+                    // Show popup
+                    setTimeout(() => {
+                        popup.classList.add('show');
+                    }, 10);
+
+                    // Remove popup and refresh page
+                    setTimeout(() => {
+                        popup.classList.remove('show');
+                        setTimeout(() => {
+                            popup.remove();
+                            window.location.reload();
+                        }, 300);
+                    }, 2000);
+                }
+            } catch (error) {
+                console.error('Error toggling save:', error);
+                const popup = document.createElement('div');
+                popup.className = 'notification-popup error';
+                popup.innerHTML = `
+                    <div class="popup-content">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Failed to update saved status</p>
+                    </div>
+                `;
+                document.body.appendChild(popup);
+                setTimeout(() => popup.classList.add('show'), 10);
+                setTimeout(() => {
+                    popup.classList.remove('show');
+                    setTimeout(() => popup.remove(), 300);
+                }, 3000);
+            }
+        }
+
+        // Call checkApplicationStatus when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            checkApplicationStatus();
+        });
+
+        // Add this CSS for the notification popup
+        const style = document.createElement('style');
+        style.textContent = `
+            .notification-popup {
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                padding: 16px 24px;
+                border-radius: 12px;
+                box-shadow: 0 4px 20px rgba(0, 32, 63, 0.2);
+                opacity: 0;
+                transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+                z-index: 1000;
+                min-width: 300px;
+            }
+
+            .notification-popup.show {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+
+            .notification-popup .popup-content {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .notification-popup.success {
+                background: linear-gradient(135deg, var(--sailor-blue) 0%, #004a7c 100%);
+                border-left: 4px solid var(--mint);
+            }
+
+            .notification-popup.error {
+                background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+                border-left: 4px solid #ff6b81;
+            }
+
+            .notification-popup i {
+                font-size: 1.5rem;
+                color: var(--mint);
+            }
+
+            .notification-popup.error i {
+                color: white;
+            }
+
+            .notification-popup p {
+                margin: 0;
+                font-size: 1rem;
+                font-weight: 500;
+                color: white;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Function to show full description in modal
+        function showFullDescription(element) {
+            try {
+                const title = element.getAttribute('data-title');
+                const description = element.getAttribute('data-description');
+                const type = element.getAttribute('data-type');
+
+                const modal = document.getElementById('descriptionModal');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalDescription = document.getElementById('modalDescription');
+
+                modalTitle.textContent = type === 'position' ? `Position: ${title}` : title;
+                modalDescription.textContent = description;
+                
+                modal.classList.add('show');
+
+                // Close modal when clicking outside
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeDescriptionModal(modal);
+                    }
+                });
+            } catch (error) {
+                console.error('Error showing description:', error);
+            }
+        }
+
+        // Function to close description modal
+        function closeDescriptionModal(element) {
+            const modal = element.closest('.description-modal');
+            if (modal) {
+                modal.classList.remove('show');
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const openModal = document.querySelector('.description-modal.show');
+                if (openModal) {
+                    closeDescriptionModal(openModal);
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

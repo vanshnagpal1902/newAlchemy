@@ -1,0 +1,15 @@
+
+
+/* Footer styling */
+.footer {
+    background-color: var(--sailor-blue);
+    color: var(--mint);
+    padding: 20px 0;
+    text-align: center;
+    width: 100%;
+}
+
+.footer .container p {
+    margin: 0;
+    font-size: 1rem;
+}

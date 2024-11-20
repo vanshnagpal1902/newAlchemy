@@ -1,0 +1,367 @@
+:root {
+    --sailor-blue: #00203F;
+    --mint: #ADEFD1;
+    --light-mint: #e8f9f2;
+    --dark-mint: #8ed3b5;
+}
+
+body {
+    background: linear-gradient(135deg, var(--mint) 0%, var(--light-mint) 100%);
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 20px;
+}
+
+.auth-container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 32, 63, 0.1);
+    padding: 40px;
+    width: 90%;
+    max-width: 400px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--sailor-blue), var(--mint));
+}
+
+.auth-container h2 {
+    color: var(--sailor-blue);
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--sailor-blue);
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.form-group .input-with-icon {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-group .input-with-icon i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--sailor-blue);
+    opacity: 0.7;
+}
+
+.form-group input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 15px 12px 45px;
+    border: 2px solid #e1e1e1;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: var(--light-mint);
+    color: var(--sailor-blue);
+}
+
+.form-group input:focus {
+    border-color: var(--sailor-blue);
+    outline: none;
+    background: white;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 13px;
+    margin-top: 5px;
+    display: none;
+}
+
+.auth-button {
+    width: 100%;
+    padding: 14px;
+    background: var(--sailor-blue);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.auth-button i {
+    font-size: 18px;
+}
+
+.auth-button:hover {
+    background: #003366;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 32, 63, 0.2);
+}
+
+.auth-links {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.auth-links a {
+    color: var(--sailor-blue);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.auth-links a:hover {
+    color: var(--dark-mint);
+}
+
+.auth-separator {
+    margin: 25px 0;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #666;
+}
+
+.auth-separator::before,
+.auth-separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+}
+
+.auth-separator span {
+    padding: 0 15px;
+    font-size: 14px;
+}
+
+.success-message {
+    background: var(--mint);
+    color: var(--sailor-blue);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: none;
+    text-align: center;
+    font-weight: 500;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.auth-container {
+    animation: fadeIn 0.5s ease;
+}
+
+.otp-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.otp-container p {
+    color: var(--sailor-blue);
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.otp-input {
+    letter-spacing: 8px !important;
+    font-size: 24px !important;
+    text-align: center !important;
+    padding: 12px 15px !important;
+    font-weight: 600 !important;
+}
+
+/* Animation for OTP container */
+#otpContainer {
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Fix input box alignment */
+.form-group input,
+.form-group .input-with-icon {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 30px 20px;
+    }
+
+    .form-group input,
+    .auth-button {
+        padding: 12px 15px;
+    }
+}
+
+/* Add these styles to your existing auth.css */
+
+.tagline {
+    text-align: center;
+    color: var(--sailor-blue);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+    font-weight: 500;
+    margin-bottom: 25px;
+    letter-spacing: 0.5px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.tagline::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--sailor-blue), var(--mint));
+    border-radius: 2px;
+}
+
+.auth-container h2 {
+    margin-bottom: 10px; /* Reduced margin to accommodate tagline */
+}
+
+/* Add these styles for the success popup */
+.success-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 32, 63, 0.2);
+    backdrop-filter: blur(5px);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 32, 63, 0.1);
+    animation: scaleIn 0.3s ease;
+}
+
+.popup-content i {
+    font-size: 3em;
+    color: var(--mint);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.popup-content p {
+    color: var(--sailor-blue);
+    font-size: 1.2em;
+    font-weight: 500;
+    margin: 0;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from { 
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to { 
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Add a success animation for the checkmark */
+.popup-content i {
+    animation: checkmark 0.5s ease-in-out;
+}
+
+@keyframes checkmark {
+    0% {
+        transform: scale(0) rotate(-45deg);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.2) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+/* Add a subtle bounce to the popup */
+.popup-content {
+    animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}

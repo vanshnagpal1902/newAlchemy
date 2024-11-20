@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Alchemy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+    <!-- Simple Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="/dashboard" class="brand">
+                <i class="ri-magic-line"></i>
+                <span>Alchemy</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Rest of your profile content -->
+    <div class="profile-container">
+        <h2>Profile Settings</h2>
+        <form id="profileForm" method="POST" action="/profile/update">
+            <!-- Username and Email (readonly) -->
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" value="<%= user.username %>" readonly class="readonly-field">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="<%= user.email %>" readonly class="readonly-field">
+            </div>
+
+            <!-- Full Name -->
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName" value="<%= user.fullName || '' %>" placeholder="Enter your full name">
+                <div class="error-message" id="fullNameError"></div>
+            </div>
+
+            <!-- Skills Section -->
+            <div class="form-group">
+                <label>Skills (Select at least 5)</label>
+                <div class="skills-section">
+                    <div class="selected-tags" id="selectedSkills">
+                        <% user.skills && user.skills.forEach(function(skill) { %>
+                            <span class="tag">
+                                <%= skill %>
+                                <span class="tag-remove" onclick="removeSkill('<%= skill %>')">&times;</span>
+                            </span>
+                        <% }); %>
+                    </div>
+                    <div class="dropdown-container">
+                        <input type="text" id="skillInput" placeholder="Search skills..." class="dropdown-input">
+                        <div class="dropdown-list" id="skillsList">
+                            <!-- Skills will be populated here -->
+                        </div>
+                    </div>
+                </div>
+                <div class="error-message" id="skillsError"></div>
+            </div>
+
+            <!-- Interests Section -->
+            <div class="form-group">
+                <label>Interests</label>
+                <div class="interests-section">
+                    <div class="selected-tags" id="selectedInterests">
+                        <% user.interests && user.interests.forEach(function(interest) { %>
+                            <span class="tag">
+                                <%= interest %>
+                                <span class="tag-remove" onclick="removeInterest('<%= interest %>')">&times;</span>
+                            </span>
+                        <% }); %>
+                    </div>
+                    <div class="dropdown-container">
+                        <input type="text" id="interestInput" placeholder="Search interests..." class="dropdown-input">
+                        <div class="dropdown-list" id="interestsList">
+                            <!-- Interests will be populated here -->
+                        </div>
+                    </div>
+                </div>
+                <div class="error-message" id="interestsError"></div>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description">Description (250 words max)</label>
+                <textarea 
+                    id="description" 
+                    name="description" 
+                    rows="4" 
+                    maxlength="1000"
+                    placeholder="Tell us about yourself..."
+                ><%= user.description || '' %></textarea>
+                <div class="word-count">
+                    <span id="wordCount">0</span>/250 words
+                </div>
+                <div class="error-message" id="descriptionError"></div>
+            </div>
+
+            <!-- University -->
+            <div class="form-group">
+                <label for="university">University</label>
+                <input type="text" id="university" name="university" value="<%= user.university || '' %>" placeholder="Enter your university" required>
+            </div>
+
+            <!-- Form Error Message -->
+            <div class="error-message" id="formError"></div>
+
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+
+        <div class="profile-actions">
+            <button id="logoutBtn" class="btn btn-logout">Logout</button>
+            <button id="deleteAccountBtn" class="btn btn-delete" onclick="handleDeleteAccount()">Delete Account</button>
+        </div>
+    </div>
+    <%- include('./partials/footer') %>
+    <script>
+        // Pass existing user data to JavaScript
+        window.userData = {
+            skills: <%- JSON.stringify(user.skills || []) %>,
+            interests: <%- JSON.stringify(user.interests || []) %>,
+            description: <%- JSON.stringify(user.description || '') %>,
+            fullName: <%- JSON.stringify(user.fullName || '') %>,
+            university: <%- JSON.stringify(user.university || '') %>
+        };
+    
+
+    </script>
+    <script src="/js/profile.js"></script>
+    <!-- Add this modal HTML before the closing body tag -->
+    <div id="confirmDeleteModal" class="confirm-modal">
+        <div class="confirm-content">
+            <div class="confirm-icon">
+                <i class="ri-delete-bin-line"></i>
+            </div>
+            <h3>Delete Account?</h3>
+            <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+            <div class="confirm-buttons">
+                <button class="cancel-btn" onclick="closeDeleteConfirmModal()">
+                    <i class="ri-close-line"></i> Cancel
+                </button>
+                <button class="delete-btn" onclick="confirmDeleteAccount()">
+                    <i class="ri-delete-bin-line"></i> Delete Account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add these styles to your existing style tag -->
+    <style>
+        .confirm-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 32, 63, 0.8);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .confirm-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .confirm-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 32, 63, 0.2);
+        }
+
+        .confirm-modal.show .confirm-content {
+            transform: translateY(0);
+        }
+
+        .confirm-icon {
+            font-size: 3rem;
+            color: #ff4757;
+            margin-bottom: 20px;
+            animation: shake 0.5s ease;
+        }
+
+        .confirm-content h3 {
+            color: var(--sailor-blue);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .confirm-content p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .confirm-buttons button {
+            padding: 12px 25px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .cancel-btn {
+            background: #f1f1f1;
+            color: #666;
+        }
+
+        .delete-btn {
+            background: #ff4757;
+            color: white;
+        }
+
+        .cancel-btn:hover {
+            background: #e1e1e1;
+            transform: translateY(-2px);
+        }
+
+        .delete-btn:hover {
+            background: #ff6b81;
+            transform: translateY(-2px);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+    </style>
+
+    <!-- Update the handleDeleteAccount function in your script -->
+    <script>
+        function handleDeleteAccount() {
+            const modal = document.getElementById('confirmDeleteModal');
+            modal.classList.add('show');
+        }
+
+        function closeDeleteConfirmModal() {
+            const modal = document.getElementById('confirmDeleteModal');
+            modal.classList.remove('show');
+        }
+
+        async function confirmDeleteAccount() {
+            try {
+                const response = await fetch('/profile/delete', {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    showCoolNotification('Account deleted successfully! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1500);
+                } else {
+                    const data = await response.json();
+                    showCoolNotification(data.error || 'Failed to delete account', 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting account:', error);
+                showCoolNotification('Failed to delete account', 'error');
+            }
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('confirmDeleteModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeleteConfirmModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDeleteConfirmModal();
+            }
+        });
+    </script>
+</body>
+</html>

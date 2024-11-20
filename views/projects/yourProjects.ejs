@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Projects - Alchemy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/projects.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Cool Notification Styles */
+        .cool-notification {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            min-width: 300px;
+            border-left: 4px solid;
+        }
+
+        .cool-notification.error {
+            background: #fff5f5;
+            border-color: #ff4757;
+        }
+
+        .cool-notification.success {
+            background: #f0fff4;
+            border-color: #00203F;
+        }
+
+        .cool-notification.show {
+            top: 20px;
+            animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .notification-icon {
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .error-icon {
+            color: #ff4757;
+            display: none;
+        }
+
+        .success-icon {
+            color: #00203F;
+            display: none;
+        }
+
+        .cool-notification.error .error-icon {
+            display: block;
+        }
+
+        .cool-notification.success .success-icon {
+            display: block;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-message {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #2d3436;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                top: -100px;
+                transform: translateX(-50%) scale(0.8);
+            }
+            50% {
+                top: 30px;
+                transform: translateX(-50%) scale(1.1);
+            }
+            100% {
+                top: 20px;
+                transform: translateX(-50%) scale(1);
+            }
+        }
+
+        @keyframes bounceOut {
+            0% {
+                top: 20px;
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                top: -100px;
+                transform: translateX(-50%) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        /* Footer Styles */
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .projects-container {
+            flex: 1;
+            margin-bottom: 50px; /* Add space above footer */
+        }
+
+        footer {
+            width: 100%;
+            margin-top: auto;
+            background: var(--sailor-blue);
+        }
+
+        .confirm-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 32, 63, 0.8);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .confirm-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .confirm-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 32, 63, 0.2);
+        }
+
+        .confirm-modal.show .confirm-content {
+            transform: translateY(0);
+        }
+
+        .confirm-icon {
+            font-size: 3rem;
+            color: #ff4757;
+            margin-bottom: 20px;
+            animation: shake 0.5s ease;
+        }
+
+        .confirm-content h3 {
+            color: var(--sailor-blue);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .confirm-content p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .confirm-buttons button {
+            padding: 12px 25px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .cancel-btn {
+            background: #f1f1f1;
+            color: #666;
+        }
+
+        .delete-btn {
+            background: #ff4757;
+            color: white;
+        }
+
+        .cancel-btn:hover {
+            background: #e1e1e1;
+            transform: translateY(-2px);
+        }
+
+        .delete-btn:hover {
+            background: #ff6b81;
+            transform: translateY(-2px);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="/dashboard" class="brand">
+                <i class="ri-magic-line"></i>
+                <span>Alchemy</span>
+            </a>
+        </div>
+        <div class="nav-right">
+           
+            <a href="/projects/add" class="nav-link">
+                <i class="fas fa-plus-circle"></i> Add Project
+            </a>
+            <a href="/projects/your" class="nav-link active">
+                <i class="fas fa-folder-open"></i> Your Projects
+            </a>
+            <a href="/projects/saved" class="nav-link">
+                <i class="fas fa-bookmark"></i> Saved Projects
+            </a>
+        </div>
+    </nav>
+
+    <div class="projects-container">
+        <h2>Your Projects</h2>
+        <div class="project-grid" id="projectsContainer">
+            <% if (projects.length === 0) { %>
+                <div class="no-projects">
+                    <p>No projects found</p>
+                    <a href="/projects/add" class="btn-primary">
+                        <i class="ri-add-circle-line"></i>
+                        Create Your First Project
+                    </a>
+                </div>
+            <% } else { %>
+                <% projects.forEach(function(project) { %>
+                    <div class="project-card">
+                        <div class="card-actions">
+                            <button onclick="editProject('<%= project._id %>')" class="btn-icon">
+                                <i class="ri-edit-line"></i>
+                            </button>
+                            <button onclick="deleteProject('<%= project._id %>')" class="btn-icon delete">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </div>
+                        
+                        <img src="<%= project.image %>" alt="<%= project.title %>" class="project-image">
+                        <div class="project-info">
+                            <h3 class="project-title"><%= project.title %></h3>
+                            <p class="project-description"><%= project.description %></p>
+                            
+                            <div class="meta-info">
+                                <p><strong>Category:</strong> <%= project.category %></p>
+                                <p><strong>Team Size:</strong> <%= project.teamSize %></p>
+                            </div>
+
+                            <% if (project.positions && project.positions.length > 0) { %>
+                                <div class="positions-section">
+                                    <h4>Open Positions</h4>
+                                    <ul>
+                                        <% project.positions.forEach(function(position) { %>
+                                            <li>
+                                                <strong><%= position.title %></strong>: 
+                                                <%= position.description %>
+                                            </li>
+                                        <% }); %>
+                                    </ul>
+                                </div>
+                            <% } %>
+
+                            <div class="project-footer">
+                                <span class="timestamp" data-timestamp="<%= project.createdAt %>">
+                                    <%= new Date(project.createdAt).toLocaleString() %>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } %>
+        </div>
+    </div>
+    <%- include('../partials/footer') %>
+
+    <div id="confirmModal" class="confirm-modal">
+        <div class="confirm-content">
+            <div class="confirm-icon">
+                <i class="ri-delete-bin-line"></i>
+            </div>
+            <h3>Delete Project?</h3>
+            <p>Are you sure you want to delete this project? This action cannot be undone.</p>
+            <div class="confirm-buttons">
+                <button class="cancel-btn" onclick="closeConfirmModal()">
+                    <i class="ri-close-line"></i> Cancel
+                </button>
+                <button class="delete-btn" onclick="confirmDelete()">
+                    <i class="ri-delete-bin-line"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showCoolNotification(message, type = 'error') {
+            let notification = document.getElementById('coolNotification');
+            if (!notification) {
+                notification = document.createElement('div');
+                notification.id = 'coolNotification';
+                notification.className = 'cool-notification';
+                notification.innerHTML = `
+                    <div class="notification-icon">
+                        <i class="ri-error-warning-line error-icon"></i>
+                        <i class="ri-checkbox-circle-line success-icon"></i>
+                    </div>
+                    <div class="notification-content">
+                        <p class="notification-message" id="notificationMessage"></p>
+                    </div>
+                `;
+                document.body.appendChild(notification);
+            }
+
+            notification.className = 'cool-notification';
+            notification.classList.add(type);
+            document.getElementById('notificationMessage').textContent = message;
+
+            requestAnimationFrame(() => {
+                notification.classList.add('show');
+            });
+
+            setTimeout(() => {
+                notification.style.animation = 'bounceOut 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    notification.style.animation = '';
+                }, 500);
+            }, 3000);
+        }
+
+        let projectToDelete = null;
+
+        async function deleteProject(projectId) {
+            projectToDelete = projectId;
+            const modal = document.getElementById('confirmModal');
+            modal.classList.add('show');
+        }
+
+        function closeConfirmModal() {
+            const modal = document.getElementById('confirmModal');
+            modal.classList.remove('show');
+            projectToDelete = null;
+        }
+
+        async function confirmDelete() {
+            if (!projectToDelete) return;
+
+            try {
+                const response = await fetch(`/projects/${projectToDelete}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    closeConfirmModal();
+                    showCoolNotification('Project deleted successfully! 🗑️', 'success');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    showCoolNotification('Failed to delete project', 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting project:', error);
+                showCoolNotification('Failed to delete project', 'error');
+            }
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('confirmModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeConfirmModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeConfirmModal();
+            }
+        });
+
+        // Function to handle project edit
+        function editProject(projectId) {
+            window.location.href = `/projects/edit/${projectId}`;
+        }
+
+        // Function to format timestamps
+        function formatTimeAgo(timestamp) {
+            const now = new Date();
+            const past = new Date(timestamp);
+            const diffInSeconds = Math.floor((now - past) / 1000);
+
+            if (diffInSeconds < 60) {
+                return 'just now';
+            } else if (diffInSeconds < 3600) {
+                const minutes = Math.floor(diffInSeconds / 60);
+                return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+            } else if (diffInSeconds < 86400) {
+                const hours = Math.floor(diffInSeconds / 3600);
+                return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+            } else if (diffInSeconds < 2592000) {
+                const days = Math.floor(diffInSeconds / 86400);
+                return `${days} day${days > 1 ? 's' : ''} ago`;
+            } else if (diffInSeconds < 31536000) {
+                const months = Math.floor(diffInSeconds / 2592000);
+                return `${months} month${months > 1 ? 's' : ''} ago`;
+            } else {
+                const years = Math.floor(diffInSeconds / 31536000);
+                return `${years} year${years > 1 ? 's' : ''} ago`;
+            }
+        }
+
+        // Update all timestamps
+        function updateTimestamps() {
+            document.querySelectorAll('.timestamp').forEach(element => {
+                const timestamp = element.getAttribute('data-timestamp');
+                element.textContent = formatTimeAgo(timestamp);
+            });
+        }
+
+        // Initial update
+        updateTimestamps();
+
+        // Update timestamps every minute
+        setInterval(updateTimestamps, 60000);
+    </script>
+</body>
+</html> 

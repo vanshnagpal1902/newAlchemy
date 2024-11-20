@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Alchemy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/auth.css">
+    <style>
+        .cool-notification {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            min-width: 300px;
+            border-left: 4px solid;
+        }
+
+        .cool-notification.error {
+            background: #fff5f5;
+            border-color: #ff4757;
+        }
+
+        .cool-notification.success {
+            background: #f0fff4;
+            border-color: #00203F;
+        }
+
+        .cool-notification.show {
+            top: 20px;
+            animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .notification-icon {
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .error-icon {
+            color: #ff4757;
+            display: none;
+        }
+
+        .success-icon {
+            color: #00203F;
+            display: none;
+        }
+
+        .cool-notification.error .error-icon {
+            display: block;
+        }
+
+        .cool-notification.success .success-icon {
+            display: block;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-message {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #2d3436;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                top: -100px;
+                transform: translateX(-50%) scale(0.8);
+            }
+            50% {
+                top: 30px;
+                transform: translateX(-50%) scale(1.1);
+            }
+            100% {
+                top: 20px;
+                transform: translateX(-50%) scale(1);
+            }
+        }
+
+        @keyframes bounceOut {
+            0% {
+                top: 20px;
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                top: -100px;
+                transform: translateX(-50%) scale(0.8);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cool-notification" id="coolNotification">
+        <div class="notification-icon">
+            <i class="ri-error-warning-line error-icon"></i>
+            <i class="ri-checkbox-circle-line success-icon"></i>
+        </div>
+        <div class="notification-content">
+            <p class="notification-message" id="notificationMessage"></p>
+        </div>
+    </div>
+    <div class="auth-container">
+        <h2><i class="ri-magic-line"></i> Welcome Back</h2>
+        <p class="tagline">Alchemy - Let's Build Together</p>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="loginUsername">Username</label>
+                <div class="input-with-icon">
+                    <i class="ri-user-line"></i>
+                    <input type="text" id="loginUsername" name="username" required placeholder="Enter your username">
+                </div>
+                <div class="error-message" id="usernameError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <div class="input-with-icon">
+                    <i class="ri-lock-line"></i>
+                    <input type="password" id="loginPassword" name="password" required placeholder="Enter your password">
+                </div>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+
+            <div class="error-message" id="loginError"></div>
+            
+            <button type="submit" class="auth-button">
+                <i class="ri-login-circle-line"></i>
+                Login
+            </button>
+        </form>
+
+        <div class="auth-links">
+            <a href="/auth/forgot-password">
+                <i class="ri-question-line"></i>
+                Forgot Password?
+            </a>
+        </div>
+
+        <div class="auth-separator">
+            <span>OR</span>
+        </div>
+
+        <div class="auth-links">
+            <a href="/auth/signup">
+                <i class="ri-user-add-line"></i>
+                Create New Account
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function showNotification(message, type = 'error') {
+            const notification = document.getElementById('coolNotification');
+            const messageEl = document.getElementById('notificationMessage');
+            
+            // If notification is already showing, remove it first
+            if (notification.classList.contains('show')) {
+                notification.classList.remove('show');
+                notification.style.animation = '';
+                // Small delay before showing new notification
+                setTimeout(() => showNewNotification(), 100);
+            } else {
+                showNewNotification();
+            }
+            
+            function showNewNotification() {
+                // Reset classes and set new content
+                notification.className = 'cool-notification';
+                notification.classList.add(type);
+                messageEl.textContent = message;
+                
+                // Show notification
+                requestAnimationFrame(() => {
+                    notification.classList.add('show');
+                });
+                
+                // Hide notification after delay
+                setTimeout(() => {
+                    notification.style.animation = 'bounceOut 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                        notification.style.animation = '';
+                    }, 500);
+                }, 3000);
+            }
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Clear any existing error messages
+            document.getElementById('loginError').textContent = '';
+            document.getElementById('usernameError').textContent = '';
+            document.getElementById('passwordError').textContent = '';
+            
+            try {
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: document.getElementById('loginUsername').value,
+                        password: document.getElementById('loginPassword').value,
+                    }),
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showNotification('Login successful! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/dashboard';
+                    }, 1500);
+                } else {
+                    // Show only one notification with the error message
+                    showNotification(data.error || 'Invalid username or password');
+                    
+                    // Don't set additional error messages in the form
+                    // document.getElementById('loginError').textContent = data.error;
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showNotification('An error occurred. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html> 

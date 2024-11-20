@@ -1,0 +1,177 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212; /* Dark background for a sleek look */
+    color: #e0e0e0; /* Light gray text for better readability */
+}
+
+.navbar {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); /* Gradient for the navbar */
+    color: white;
+    padding: 15px 30px; /* More padding for a spacious look */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.navbar h1 {
+    margin: 0;
+    font-size: 28px; /* Larger title for better emphasis */
+}
+
+.navbar-icons {
+    display: flex;
+    gap: 20px; /* More space between icons */
+}
+
+.icon {
+    cursor: pointer;
+    font-size: 22px; /* Larger icon size */
+    position: relative;
+}
+
+.msg-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background: #ff4757; /* Red badge for message count */
+    color: white;
+    border-radius: 50%;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+.projects {
+    padding: 40px 20px; /* More padding for better spacing */
+}
+
+.project-list {
+    display: flex;
+    flex-wrap: wrap; /* Cards will wrap on smaller screens */
+    gap: 20px; /* Space between project cards */
+}
+
+.project-item {
+    background: rgba(255, 255, 255, 0.1); /* Light transparent background */
+    border: 1px solid #007bff; /* Blue border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px;
+    width: calc(33.33% - 20px); /* Three cards per row */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s; /* Smooth scaling and shadow effect on hover */
+}
+
+.project-item:hover {
+    transform: scale(1.05); /* Slight scale effect on hover */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Enhanced shadow effect */
+}
+
+.project-item h3 {
+    margin: 0;
+    color: #007bff; /* Blue title */
+    font-size: 20px; /* Slightly larger font */
+}
+
+.project-item p {
+    margin: 10px 0 0;
+    color: #ccc; /* Light grey text for description */
+}
+
+.category {
+    font-weight: bold; /* Make category text bold */
+    color: #e0e0e0; /* Match body text color for consistency */
+}
+
+.skills {
+    margin: 10px 0; /* Space between skills and team size */
+}
+
+.skill {
+    background-color: #007bff; /* Blue background for skill tags */
+    color: #ffffff;
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.team-size {
+    font-weight: bold; /* Bold text for team size */
+}
+
+.match {
+    color: #4caf50; /* Green color for match percentage */
+    font-weight: bold; /* Make match percentage bold */
+    margin: 10px 0; /* Space above and below */
+}
+
+.contact-button {
+    background: #007bff; /* Blue button */
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s; /* Smooth transition */
+    width: 100%; /* Full-width button */
+}
+
+.contact-button:hover {
+    background: #0056b3; /* Darker blue on hover */
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8); /* Dark overlay with opacity */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#login-form {
+    background: #1f1f1f; /* Darker background for form */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    width: 300px; /* Fixed width for the form */
+}
+
+#login-form label,
+#login-form input {
+    display: block;
+    margin: 10px 0;
+    color: #fff; /* White text for form */
+}
+
+#login-form input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #333; /* Dark input background */
+    color: #fff; /* White text for input */
+}
+
+button {
+    background: #007bff; /* Blue button */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s; /* Smooth transition */
+    width: 100%; /* Full-width button */
+}
+
+button:hover {
+    background: #0056b3; /* Darker blue on hover */
+}
+
+a {
+    color: #007bff; /* Blue link */
+}

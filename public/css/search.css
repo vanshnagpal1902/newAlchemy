@@ -1,0 +1,1166 @@
+:root {
+    --sailor-blue: #00203F;
+    --mint: #ADEFD1;
+    --light-mint: #e8f9f2;
+}
+
+.search-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.search-header {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 32, 63, 0.1);
+    margin-bottom: 30px;
+}
+
+.search-title {
+    color: var(--sailor-blue);
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Select2 Custom Styling */
+.select2-container {
+    margin-bottom: 20px;
+}
+
+.select2-container--default .select2-selection--multiple,
+.select2-container--default .select2-selection--single {
+    border: 2px solid #e1e1e1;
+    border-radius: 10px;
+    padding: 8px;
+    min-height: 50px;
+    background: var(--light-mint);
+    transition: all 0.3s ease;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple,
+.select2-container--default.select2-container--focus .select2-selection--single,
+.select2-container--default.select2-container--open .select2-selection--single {
+    border-color: var(--sailor-blue);
+    outline: none;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 32, 63, 0.1);
+}
+
+/* Dropdown Panel Styling */
+.select2-container--default .select2-dropdown {
+    border: 2px solid var(--sailor-blue);
+    border-radius: 10px;
+    margin-top: 5px;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0, 32, 63, 0.1);
+    overflow: hidden;
+}
+
+/* Search Box in Dropdown */
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    border: 2px solid #e1e1e1;
+    border-radius: 8px;
+    padding: 8px 12px;
+    background: var(--light-mint);
+    transition: all 0.3s ease;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field:focus {
+    border-color: var(--sailor-blue);
+    outline: none;
+    background: white;
+}
+
+/* Dropdown Options */
+.select2-container--default .select2-results__option {
+    padding: 10px 15px;
+    color: var(--sailor-blue);
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background: var(--light-mint);
+    color: var(--sailor-blue);
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+    background: var(--mint);
+    color: var(--sailor-blue);
+}
+
+/* Selected Tags */
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background: var(--mint);
+    color: var(--sailor-blue);
+    border: none;
+    border-radius: 20px;
+    padding: 5px 12px;
+    margin: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 5px rgba(0, 32, 63, 0.1);
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: var(--sailor-blue);
+    font-size: 1.2em;
+    margin-right: 5px;
+    border: none;
+    background: none;
+    padding: 0;
+    order: 2;
+    transition: all 0.3s ease;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+    background: none;
+    color: #ff4757;
+    transform: scale(1.1);
+}
+
+/* Scrollbar Styling */
+.select2-results__options::-webkit-scrollbar {
+    width: 8px;
+}
+
+.select2-results__options::-webkit-scrollbar-track {
+    background: var(--light-mint);
+    border-radius: 4px;
+}
+
+.select2-results__options::-webkit-scrollbar-thumb {
+    background: var(--mint);
+    border-radius: 4px;
+}
+
+.select2-results__options::-webkit-scrollbar-thumb:hover {
+    background: var(--sailor-blue);
+}
+
+/* Results Section */
+.results-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.user-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 32, 63, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 25px;
+}
+
+.user-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 32, 63, 0.15);
+}
+
+.user-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--light-mint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8em;
+    color: var(--sailor-blue);
+}
+
+.user-info h3 {
+    color: var(--sailor-blue);
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.user-university {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 15px 0;
+}
+
+.skill-tag {
+    background: var(--light-mint);
+    color: var(--sailor-blue);
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.message-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--sailor-blue);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.message-btn:hover {
+    background: #003366;
+    transform: translateY(-2px);
+}
+
+.message-btn i {
+    font-size: 1.2em;
+}
+
+.search-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--sailor-blue);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.search-btn:hover {
+    background: #003366;
+    transform: translateY(-2px);
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px;
+    background: white;
+    border-radius: 15px;
+    color: #666;
+}
+
+.no-results i {
+    font-size: 3em;
+    color: var(--sailor-blue);
+    margin-bottom: 15px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .results-section {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .results-section {
+        grid-template-columns: 1fr;
+    }
+
+    .search-container {
+        padding: 15px;
+    }
+
+    .search-header {
+        padding: 20px;
+    }
+
+    .search-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* Navbar Styles */
+.navbar {
+    background: var(--sailor-blue);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 32, 63, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.nav-left .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--mint);
+    font-size: 1.8rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.nav-left .brand i {
+    font-size: 2rem;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-link {
+    color: var(--mint);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-link i {
+    font-size: 1.2rem;
+}
+
+.nav-link:hover {
+    background: rgba(173, 239, 209, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Selected Skills Styles */
+.select2-container--default .select2-selection--multiple {
+    border: 2px solid #e1e1e1;
+    border-radius: 10px;
+    padding: 8px;
+    min-height: 50px;
+    background: var(--light-mint);
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border-color: var(--sailor-blue);
+    background: white;
+    outline: none;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background: var(--mint);
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    color: var(--sailor-blue);
+    font-weight: 500;
+    margin: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 5px rgba(0, 32, 63, 0.1);
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: var(--sailor-blue);
+    font-size: 1.2em;
+    margin-right: 5px;
+    border: none;
+    background: none;
+    padding: 0;
+    order: 2;
+    transition: all 0.3s ease;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+    background: none;
+    color: #ff4757;
+    transform: scale(1.1);
+}
+
+/* Selected Skills Display Above Dropdown */
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 5px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-search--inline {
+    order: 999; /* Push search input below selected items */
+    margin-top: 5px;
+    width: 100%;
+}
+
+.select2-container--default .select2-selection--multiple .select2-search--inline .select2-search__field {
+    margin-top: 0;
+    width: 100% !important;
+}
+
+/* Selected Skills Display */
+.selected-skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+    min-height: 45px;
+    max-height: 120px;
+    padding: 8px;
+    border: 2px solid #e1e1e1;
+    border-radius: 10px;
+    background: var(--light-mint);
+    overflow-y: auto;
+}
+
+.selected-skill-tag {
+    background: var(--mint);
+    color: var(--sailor-blue);
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 5px rgba(0, 32, 63, 0.1);
+    margin: 2px;
+}
+
+.selected-skill-tag i {
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.selected-skill-tag i:hover {
+    color: #ff4757;
+    transform: scale(1.1);
+}
+
+/* Hide selected items from dropdown */
+.select2-selection__choice {
+    display: none !important;
+}
+
+.select2-container--default .select2-selection--multiple {
+    border: 2px solid #e1e1e1;
+    border-radius: 10px;
+    min-height: 45px;
+    background: var(--light-mint);
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border-color: var(--sailor-blue);
+    background: white;
+}
+
+.remove-skill {
+    cursor: pointer;
+    color: var(--sailor-blue);
+    transition: color 0.3s ease;
+}
+
+.remove-skill:hover {
+    color: #ff4757;
+}
+
+/* Adjust main content for fixed navbar */
+.search-container {
+    margin-top: 100px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
+}
+
+/* Update Select2 container to show selected items above */
+.select2-container--default .select2-selection--multiple {
+    display: flex;
+    flex-direction: column;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    display: flex;
+    flex-direction: column;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    order: -1;
+    margin-top: 5px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-search--inline {
+    order: 1;
+}
+
+/* Add/Update these styles for university dropdown */
+.select2-container--default .select2-selection--single {
+    height: 55px;
+    border: 2px solid #e1e1e1;
+    border-radius: 12px;
+    background: var(--light-mint);
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    transition: all 0.3s ease;
+}
+
+.select2-container--default .select2-selection--single:hover {
+    border-color: var(--sailor-blue);
+    background: white;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: var(--sailor-blue);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 55px;
+    padding-left: 0;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: #666;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 53px;
+    width: 30px;
+    right: 10px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: var(--sailor-blue) transparent transparent transparent;
+    border-width: 6px 6px 0 6px;
+    margin-left: -6px;
+    margin-top: -3px;
+    transition: all 0.3s ease;
+}
+
+.select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+    border-color: transparent transparent var(--sailor-blue) transparent;
+    border-width: 0 6px 6px 6px;
+}
+
+/* Dropdown styles */
+.select2-dropdown {
+    border: 2px solid var(--sailor-blue);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 32, 63, 0.15);
+    margin-top: 5px;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    border: 2px solid #e1e1e1;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.95rem;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field:focus {
+    border-color: var(--sailor-blue);
+    outline: none;
+}
+
+.select2-container--default .select2-results__option {
+    padding: 12px 15px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: var(--sailor-blue);
+    color: white;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+    background-color: var(--light-mint);
+    color: var(--sailor-blue);
+    font-weight: 500;
+}
+
+/* Add spacing between dropdowns */
+.search-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+}
+
+/* Skills dropdown container */
+.select2-container--default:first-of-type {
+    margin-bottom: 20px !important;
+    z-index: 3;
+    position: relative;
+}
+
+/* University dropdown container */
+.select2-container--default:last-of-type {
+    z-index: 2;
+    position: relative;
+}
+
+/* Dropdown Panel Styling */
+.select2-container--default .select2-dropdown {
+    border: 2px solid var(--sailor-blue);
+    border-radius: 10px;
+    margin-top: 5px;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0, 32, 63, 0.1);
+    overflow: hidden;
+    z-index: 1001;  /* Higher z-index for dropdown */
+}
+
+/* Ensure dropdowns don't get cut off */
+.select2-container--open .select2-dropdown {
+    z-index: 1002;  /* Even higher z-index when open */
+}
+
+/* Adjust container heights */
+.select2-container {
+    margin-bottom: 0;
+    height: auto;
+    min-height: 42px;
+}
+
+/* Make sure the search button stays below */
+.search-btn {
+    position: relative;
+    z-index: 1;
+    margin-top: 20px;
+}
+
+/* Dropdown and Tags Styling - Matching Profile Page */
+.dropdown-container {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e1e1e1;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    background: var(--light-mint);
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.dropdown-input:focus {
+    border-color: var(--sailor-blue);
+    outline: none;
+    background: white;
+}
+
+.dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid var(--sailor-blue);
+    border-radius: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 4px 15px rgba(0, 32, 63, 0.1);
+    margin-top: 5px;
+}
+
+.dropdown-list.show {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--sailor-blue);
+    font-size: 0.95rem;
+}
+
+.dropdown-item:hover {
+    background: var(--light-mint);
+}
+
+/* Selected Tags Styling */
+.selected-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+    min-height: 35px;
+    padding: 10px;
+    border: 2px solid #e1e1e1;
+    border-radius: 8px;
+    background: var(--light-mint);
+}
+
+.tag {
+    background: var(--mint);
+    color: var(--sailor-blue);
+    padding: 5px 12px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.tag-remove {
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.tag-remove:hover {
+    color: #ff4757;
+    transform: scale(1.1);
+}
+
+/* Scrollbar Styling */
+.dropdown-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dropdown-list::-webkit-scrollbar-track {
+    background: var(--light-mint);
+    border-radius: 4px;
+}
+
+.dropdown-list::-webkit-scrollbar-thumb {
+    background: var(--mint);
+    border-radius: 4px;
+}
+
+.dropdown-list::-webkit-scrollbar-thumb:hover {
+    background: var(--sailor-blue);
+}
+
+/* Add/Update these styles */
+.selected-skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+    min-height: 35px;
+    padding: 10px;
+    border: 2px solid #e1e1e1;
+    border-radius: 10px;
+    background: var(--light-mint);
+}
+
+.selected-skill-tag {
+    background: var(--mint);
+    color: var(--sailor-blue);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 5px rgba(0, 32, 63, 0.1);
+}
+
+.selected-skill-tag i {
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.selected-skill-tag i:hover {
+    color: #ff4757;
+    transform: scale(1.1);
+}
+
+/* Update Select2 container styles */
+.select2-container {
+    margin-bottom: 15px;
+}
+
+.select2-container--default .select2-selection--multiple {
+    min-height: 50px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    margin-top: 5px;
+}
+
+/* Update these styles */
+.select2-container--default .select2-selection--multiple {
+    min-height: 42px !important;
+    height: auto;
+    padding: 3px 8px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background: var(--mint);
+    color: var(--sailor-blue);
+    border: none;
+    border-radius: 15px;
+    padding: 2px 8px;
+    margin: 2px 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    border: none;
+    background: none;
+    color: var(--sailor-blue);
+    padding: 0 4px;
+    margin-right: 4px;
+    order: 1;
+}
+
+/* Hide the 'x' and show dropdown arrow */
+.select2-container--default .select2-selection--multiple .select2-selection__clear {
+    display: none;
+}
+
+.select2-container--default .select2-selection--multiple:after {
+    content: '';
+    border-color: #888 transparent transparent transparent;
+    border-style: solid;
+    border-width: 5px 4px 0 4px;
+    height: 0;
+    right: 10px;
+    margin-left: -4px;
+    margin-top: -2px;
+    position: absolute;
+    top: 50%;
+    width: 0;
+}
+
+/* Adjust the search box */
+.select2-container--default .select2-search--inline .select2-search__field {
+    margin-top: 0;
+    height: 28px;
+    min-height: 28px;
+}
+
+/* Remove extra spacing */
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border-color: var(--sailor-blue);
+}
+
+/* Make the container height consistent */
+.select2-container {
+    height: 45px;
+}
+
+/* Update Select2 styles */
+.select2-container--classic .select2-selection--multiple {
+    min-height: 45px !important;
+    border: 2px solid #e1e1e1 !important;
+    border-radius: 10px !important;
+    background: var(--light-mint) !important;
+}
+
+.select2-container--classic.select2-container--focus .select2-selection--multiple {
+    border-color: var(--sailor-blue) !important;
+    background: white !important;
+}
+
+.select2-container--classic .select2-selection--multiple .select2-selection__rendered {
+    padding: 4px 8px !important;
+}
+
+.select2-container--classic .select2-selection--multiple .select2-selection__choice {
+    background: var(--mint) !important;
+    border: none !important;
+    border-radius: 15px !important;
+    padding: 4px 8px !important;
+    margin: 2px 4px !important;
+    color: var(--sailor-blue) !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+}
+
+.select2-container--classic .select2-selection--multiple .select2-selection__choice__remove {
+    color: var(--sailor-blue) !important;
+    margin-right: 5px !important;
+    border: none !important;
+    background: none !important;
+    padding: 0 4px !important;
+}
+
+.select2-container--classic .select2-selection--multiple .select2-selection__choice__remove:hover {
+    color: #ff4757 !important;
+    background: none !important;
+}
+
+.select2-container--classic .select2-search--inline .select2-search__field {
+    margin-top: 0 !important;
+    height: 28px !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.select2-container--classic .select2-dropdown {
+    border: 2px solid var(--sailor-blue) !important;
+    border-radius: 10px !important;
+    margin-top: 5px !important;
+}
+
+.select2-container--classic .select2-results__option {
+    padding: 8px 12px !important;
+    font-size: 0.95rem !important;
+}
+
+.select2-container--classic .select2-results__option--highlighted[aria-selected] {
+    background: var(--light-mint) !important;
+    color: var(--sailor-blue) !important;
+}
+
+.select2-container--classic .select2-results__option[aria-selected=true] {
+    background: var(--mint) !important;
+    color: var(--sailor-blue) !important;
+}
+
+/* Add arrow styling */
+.select2-container--classic .select2-selection--multiple:after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-style: solid;
+    border-width: 5px 5px 0 5px;
+    border-color: var(--sailor-blue) transparent transparent transparent;
+}
+
+/* Hide clear button */
+.select2-container--classic .select2-selection--multiple .select2-selection__clear {
+    display: none !important;
+}
+
+/* Selected skills container */
+.selected-skills-display {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 42px;
+    padding: 4px 8px;
+    border: 2px solid #e1e1e1;
+    border-radius: 10px;
+    background: var(--light-mint);
+    margin-bottom: 20px;
+}
+
+.selected-skill {
+    background: var(--mint);
+    color: var(--sailor-blue);
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.selected-skill i {
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.selected-skill i:hover {
+    color: #ff4757;
+    transform: scale(1.1);
+}
+
+/* Update Select2 container margin */
+.select2-container {
+    margin-bottom: 0;
+}
+
+/* Update form spacing and dropdown heights */
+.search-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+}
+
+/* Make both dropdowns same height */
+.select2-container--default .select2-selection--multiple,
+.select2-container--default .select2-selection--single {
+    height: 42px !important;
+    min-height: 42px !important;
+    padding: 4px 8px;
+    border: 2px solid #e1e1e1;
+    border-radius: 10px;
+    background: var(--light-mint);
+    transition: all 0.3s ease;
+}
+
+/* Skills dropdown specific */
+.select2-container--default:first-of-type {
+    margin-bottom: 20px !important;
+    z-index: 3;
+    position: relative;
+}
+
+/* University dropdown specific */
+.select2-container--default:last-of-type {
+    z-index: 2;
+    position: relative;
+}
+
+/* Adjust text alignment in university dropdown */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 32px !important;
+    padding-left: 0;
+}
+
+/* Adjust arrow position in university dropdown */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 40px;
+    right: 8px;
+}
+
+/* Adjust input height in skills dropdown */
+.select2-container--default .select2-search--inline .select2-search__field {
+    margin-top: 0;
+    height: 32px;
+    min-height: 32px;
+}
+
+/* Ensure consistent spacing */
+.select2-container {
+    margin-bottom: 0;
+    height: 42px;
+}
+
+/* Update placeholder styling */
+.select2-container--default .select2-selection--multiple .select2-search__field::placeholder {
+    color: var(--sailor-blue);
+    opacity: 0.7;
+}
+
+.select2-container--default .select2-selection--multiple .select2-search__field {
+    margin-top: 0;
+    margin-left: 5px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Custom container styles */
+.select2-container--custom .select2-selection--multiple {
+    min-height: 42px;
+}
+
+/* Custom dropdown styles */
+.select2-dropdown--custom .select2-search__field {
+    padding: 8px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Update Select2 dropdown styles */
+.select2-container--default .select2-dropdown {
+    border: 2px solid var(--sailor-blue);
+    border-radius: 10px;
+    margin-top: 5px;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0, 32, 63, 0.1);
+    overflow: hidden;
+    z-index: 1001;
+}
+
+/* Fix the height and scrolling of the dropdown */
+.select2-container--default .select2-results > .select2-results__options {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Fix the option height and prevent text wrapping */
+.select2-container--default .select2-results__option {
+    padding: 8px 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+    min-height: 36px;
+}
+
+/* Ensure proper spacing in multiple select */
+.select2-container--default .select2-selection--multiple {
+    min-height: 42px !important;
+    height: auto;
+    padding: 4px 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* Fix search field alignment */
+.select2-container--default .select2-search--inline {
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    height: 32px;
+    display: flex;
+    align-items: center;
+}
+
+.select2-container--default .select2-search--inline .select2-search__field {
+    margin: 0;
+    padding: 0 8px;
+    height: 32px;
+    min-height: 32px;
+    line-height: 32px;
+}
+
+/* Ensure proper z-index stacking */
+.select2-container--open {
+    z-index: 9999;
+}
+
+/* Fix dropdown positioning */
+.select2-container--default.select2-container--open.select2-container--above .select2-selection--multiple,
+.select2-container--default.select2-container--open.select2-container--below .select2-selection--multiple {
+    border-radius: 10px;
+}

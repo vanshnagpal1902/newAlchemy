@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Alchemy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/messages.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="/dashboard" class="brand">
+                <i class="ri-magic-line"></i>
+                <span>Alchemy</span>
+            </a>
+        </div>
+    
+       
+    </nav>
+
+    <div class="messages-container">
+        <!-- Chats List -->
+        <div class="chats-list">
+            <div class="chats-header">
+
+               <h3><i class="fas fa-comments"></i> Messages</h3>
+            </div>
+            <div class="chats-search">
+                <input type="text" placeholder="Search chats..." id="searchChats">
+            </div>
+            <div class="chats" id="chatsList">
+                <!-- Target user will be added here first if coming from search -->
+                <% if (targetUser && targetUser.id) { %>
+                    <div class="chat-item active" onclick="openChat('<%= targetUser.id %>', '<%= targetUser.username %>')">
+                        <div class="chat-user-info">
+                            <h4><%= targetUser.username %></h4>
+                            <p class="last-message">Click to start chatting</p>
+                        </div>
+                    </div>
+                <% } %>
+                <!-- Other chats will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="chat-area" id="chatArea">
+            <!-- Default view when no chat is selected -->
+            <div class="no-chat-selected" id="noChatSelected" style="<%= targetUser ? 'display: none;' : '' %>">
+                <i class="fas fa-comments"></i>
+                <p>Select a chat to start messaging</p>
+            </div>
+
+            <!-- Active chat view -->
+            <div class="active-chat" id="activeChat" style="<%= targetUser ? 'display: flex;' : 'display: none;' %>">
+                <div class="chat-header">
+                    <div class="chat-user-info">
+                        <h4 id="chatUserName"><%= targetUser ? targetUser.username : '' %></h4>
+                    </div>
+                </div>
+
+                <div class="messages" id="messagesContainer">
+                    <!-- Messages will be dynamically added here -->
+                </div>
+
+                <div class="message-input">
+                    <input type="text" id="messageInput" placeholder="Type a message...">
+                    <button class="send-btn" id="sendMessage">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentChatUser = '<%= targetUser ? targetUser.id : null %>';
+        let currentChatUsername = '<%= targetUser ? targetUser.username : null %>';
+        const socket = io();
+        const userId = '<%= user.id %>';
+        
+        // Initialize with pre-filled message if provided
+        const urlParams = new URLSearchParams(window.location.search);
+        const prefilledMessage = urlParams.get('message');
+        if (prefilledMessage) {
+            document.getElementById('messageInput').value = decodeURIComponent(prefilledMessage);
+        }
+    </script>
+    <script src="/js/messages.js"></script>
+</body>
+</html> 

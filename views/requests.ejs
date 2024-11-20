@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Requests - Alchemy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/requests.css">
+ 
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="/dashboard" class="brand">
+                <i class="ri-magic-line"></i>
+                <span>Alchemy</span>
+            </a>
+        </div>
+        <div class="nav-right">
+      
+            <a href="/requests/received" class="nav-link <%= type === 'received' ? 'active' : '' %>">
+                <i class="ri-inbox-line"></i> Received Requests
+            </a>
+            <a href="/requests/sent" class="nav-link <%= type === 'sent' ? 'active' : '' %>">
+                <i class="ri-send-plane-line"></i> Sent Requests
+            </a>
+        </div>
+    </nav>
+
+    <div class="requests-container">
+        <h2>Requests</h2>
+        
+        <div class="requests-list">
+            <% if (requests.length === 0) { %>
+                <div class="no-requests">
+                    <p>No requests found</p>
+                </div>
+            <% } else { %>
+                <% requests.forEach(function(request) { %>
+                    <div class="request-card">
+                        <div class="request-header">
+                            <span class="request-type">
+                                <i class="fas fa-file-alt"></i> 
+                                Project Application
+                            </span>
+                            <span class="request-status <%= request.status %>">
+                                <%= request.status.charAt(0).toUpperCase() + request.status.slice(1) %>
+                            </span>
+                        </div>
+
+                        <div class="request-details">
+                            <p><strong>Project:</strong> <%= request.project ? request.project.title : 'N/A' %></p>
+                            <p><strong>Position:</strong> <%= request.position ? request.position.title : 'N/A' %></p>
+                            <p><strong>From:</strong> <%= request.from ? request.from.username : 'Unknown' %></p>
+                            <p><strong>To:</strong> <%= request.to ? request.to.username : 'Unknown' %></p>
+                            
+                            <div class="applicant-details">
+                                <h4>Application Details:</h4>
+                                <p><strong>Reason:</strong> <%= request.details.reason %></p>
+                                <p><strong>Experience:</strong> <%= request.details.experience %></p>
+                            </div>
+
+                            <!-- Show buttons only for received requests that are pending -->
+                            <% if (request.status === 'pending' && request.to && request.to._id && request.to._id.toString() === user.id) { %>
+                                <div class="request-actions">
+                                    <button class="btn btn-accept" onclick="respondToRequest('<%= request._id %>', 'accepted')">
+                                        Accept
+                                    </button>
+                                    <button class="btn btn-reject" onclick="respondToRequest('<%= request._id %>', 'rejected')">
+                                        Reject
+                                    </button>
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <div class="request-footer">
+                            <span class="request-date">
+                                <%= new Date(request.createdAt).toLocaleDateString() %>
+                            </span>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        async function respondToRequest(requestId, status) {
+            try {
+                const response = await fetch(`/requests/${requestId}/respond`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status })
+                });
+
+                if (response.ok) {
+                    // Reload the page to show updated status
+                    window.location.reload();
+                } else {
+                    const data = await response.json();
+                    alert(data.error || 'Failed to respond to request');
+                }
+            } catch (error) {
+                console.error('Error responding to request:', error);
+                alert('Failed to respond to request');
+            }
+        }
+    </script>
+</body>
+</html> 

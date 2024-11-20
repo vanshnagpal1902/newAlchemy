@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Project - Alchemy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/addProject.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="/dashboard" class="brand">
+                <i class="ri-magic-line"></i>
+                <span>Alchemy</span>
+            </a>
+        </div>
+        <div class="nav-right">
+           
+            <a href="/projects/add" class="nav-link">
+                <i class="fas fa-plus-circle"></i> Add Project
+            </a>
+            <a href="/projects/your" class="nav-link">
+                <i class="fas fa-folder-open"></i> Your Projects
+            </a>
+            <a href="/projects/saved" class="nav-link">
+                <i class="fas fa-bookmark"></i> Saved Projects
+            </a>
+        </div>
+    </nav>
+
+    <div class="add-project-container">
+        <h2>Edit Project</h2>
+        <form id="editProjectForm" method="POST" enctype="multipart/form-data">
+            <!-- Project Image -->
+            <div class="form-group">
+                <label for="projectImage">Project Image</label>
+                <div class="current-image">
+                    <img src="<%= project.image %>" alt="Current project image" class="preview-image">
+                    <div class="image-overlay">
+                        <label for="projectImage" class="change-image-btn">
+                            <i class="fas fa-camera"></i>
+                            Change Image
+                        </label>
+                    </div>
+                </div>
+                <input type="file" id="projectImage" name="projectImage" accept="image/*" class="image-input" hidden>
+            </div>
+
+            <!-- Project Title -->
+            <div class="form-group">
+                <label for="title">Project Title</label>
+                <input type="text" id="title" name="title" required placeholder="Enter project title" value="<%= project.title %>">
+                <div class="error-message" id="titleError"></div>
+            </div>
+
+            <!-- Project Description -->
+            <div class="form-group">
+                <label for="description">Description (200 words max)</label>
+                <textarea 
+                    id="description" 
+                    name="description" 
+                    rows="6" 
+                    required 
+                    placeholder="Describe your project..."
+                ><%= project.description %></textarea>
+                <div class="word-count">
+                    <span id="wordCount">0</span>/200 words
+                </div>
+                <div class="error-message" id="descriptionError"></div>
+            </div>
+
+            <!-- Category -->
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                    <option value="">Select Category</option>
+                    <option value="web" <%= project.category === 'web' ? 'selected' : '' %>>Web Development</option>
+                    <option value="mobile" <%= project.category === 'mobile' ? 'selected' : '' %>>Mobile App</option>
+                    <option value="ai" <%= project.category === 'ai' ? 'selected' : '' %>>AI/ML</option>
+                    <option value="blockchain" <%= project.category === 'blockchain' ? 'selected' : '' %>>Blockchain</option>
+                    <option value="game" <%= project.category === 'game' ? 'selected' : '' %>>Game Development</option>
+                    <option value="iot" <%= project.category === 'iot' ? 'selected' : '' %>>IoT</option>
+                    <option value="other" <%= project.category === 'other' ? 'selected' : '' %>>Other</option>
+                </select>
+                <div class="error-message" id="categoryError"></div>
+            </div>
+
+            <!-- Team Size -->
+            <div class="form-group">
+                <label for="teamSize">Team Size</label>
+                <select id="teamSize" name="teamSize" required>
+                    <option value="">Select Team Size</option>
+                    <option value="1" <%= project.teamSize === '1' ? 'selected' : '' %>>1 Member</option>
+                    <option value="2" <%= project.teamSize === '2' ? 'selected' : '' %>>2 Members</option>
+                    <option value="3" <%= project.teamSize === '3' ? 'selected' : '' %>>3 Members</option>
+                    <option value="4" <%= project.teamSize === '4' ? 'selected' : '' %>>4 Members</option>
+                    <option value="5+" <%= project.teamSize === '5+' ? 'selected' : '' %>>More than 4</option>
+                </select>
+                <div class="error-message" id="teamSizeError"></div>
+            </div>
+
+            <!-- Open Positions Section -->
+            <div class="positions-section">
+                <h3><i class="fas fa-users"></i> Team Positions</h3>
+                <div id="positionsContainer">
+                    <% project.positions.forEach(function(position, index) { %>
+                        <div class="position-form">
+                            <div class="position-header">
+                                <span class="position-number">Position #<%= index + 1 %></span>
+                                <button type="button" class="remove-position" onclick="removePosition(this)">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label>Position Title</label>
+                                <input type="text" name="positions[<%= index %>][title]" required 
+                                       value="<%= position.title %>" placeholder="e.g., Frontend Developer">
+                            </div>
+                            <div class="form-group">
+                                <label>Position Description</label>
+                                <textarea name="positions[<%= index %>][description]" rows="3" required 
+                                          placeholder="Describe the role requirements..."><%= position.description %></textarea>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+                <button type="button" class="add-position-btn" onclick="window.addPosition()">
+                    <i class="fas fa-plus"></i> Add Position
+                </button>
+            </div>
+
+            <button type="submit" class="create-project-btn">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+        </form>
+    </div>
+
+    <!-- Position Form Template (hidden) -->
+    <template id="positionTemplate">
+        <div class="position-form">
+            <div class="position-header">
+                <span class="position-number">Position #<span class="position-count"></span></span>
+                <button type="button" class="remove-position" onclick="removePosition(this)">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="form-group">
+                <label>Position Title</label>
+                <input type="text" name="positions[0][title]" required placeholder="e.g., Frontend Developer">
+            </div>
+            <div class="form-group">
+                <label>Position Description</label>
+                <textarea name="positions[0][description]" rows="3" required placeholder="Describe the role requirements..."></textarea>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        // Initialize project data
+        const project = <%- JSON.stringify(project) %>;
+    </script>
+    <script src="/js/editProject.js"></script>
+</body>
+</html> 

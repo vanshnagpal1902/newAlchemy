@@ -1,0 +1,255 @@
+:root {
+    --sailor-blue: #00203F;
+    --mint: #ADEFD1;
+    --light-mint: #e8f9f2;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: var(--light-mint);
+}
+
+/* Navbar Styles */
+.navbar {
+    background: var(--sailor-blue);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 32, 63, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.nav-left .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--mint);
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-link {
+    color: var(--mint);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-link i {
+    font-size: 1.2rem;
+}
+
+.nav-link:hover {
+    background: rgba(173, 239, 209, 0.1);
+    transform: translateY(-2px);
+}
+
+.nav-link.active {
+    background: var(--mint);
+    color: var(--sailor-blue);
+}
+
+/* Projects Container */
+.projects-container {
+    max-width: 1200px;
+    margin: 100px auto 30px;
+    padding: 0 20px;
+}
+
+.projects-container h2 {
+    color: var(--sailor-blue);
+    font-size: 2rem;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+/* Project Card Styles */
+.project-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 32, 63, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 32, 63, 0.15);
+}
+
+.card-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 10px;
+    z-index: 2;
+}
+
+.btn-icon {
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 32, 63, 0.1);
+}
+
+.btn-icon:hover {
+    transform: scale(1.1);
+}
+
+.btn-icon.delete:hover {
+    background: #ff4757;
+    color: white;
+}
+
+.btn-icon i {
+    font-size: 1.2rem;
+    color: var(--sailor-blue);
+}
+
+.btn-icon.delete:hover i {
+    color: white;
+}
+
+.project-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.project-info {
+    padding: 20px;
+}
+
+.project-title {
+    color: var(--sailor-blue);
+    font-size: 1.3rem;
+    margin: 0 0 15px 0;
+}
+
+.project-description {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+/* Positions Section */
+.positions-section {
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.positions-section h4 {
+    color: var(--sailor-blue);
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+}
+
+.positions-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.positions-section li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f5f5f5;
+    font-size: 0.9rem;
+}
+
+.project-footer {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* No Projects State */
+.no-projects {
+    text-align: center;
+    padding: 50px;
+    background: white;
+    border-radius: 15px;
+    grid-column: 1 / -1;
+}
+
+.no-projects p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    background: var(--sailor-blue);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 32, 63, 0.2);
+}
+
+@media (max-width: 768px) {
+    .projects-container {
+        padding: 0 15px;
+        margin-top: 80px;
+    }
+
+    .project-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-link {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+} 

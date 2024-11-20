@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Alchemy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/auth.css">
+    <style>
+        .notification-popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transform: translateX(150%);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+            min-width: 300px;
+        }
+
+        .notification-popup.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .notification-popup .popup-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .notification-popup.success {
+            background: linear-gradient(135deg, #00203F 0%, #004a7c 100%);
+            border-left: 4px solid #ADEFD1;
+        }
+
+        .notification-popup.error {
+            background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+            border-left: 4px solid #ff6b81;
+        }
+
+        .notification-popup i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .notification-popup p {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(150%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(150%);
+                opacity: 0;
+            }
+        }
+
+        .cool-notification {
+            position: fixed;
+            top: -100px; /* Start above the viewport */
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            min-width: 300px;
+            border-left: 4px solid;
+        }
+
+        .cool-notification.error {
+            background: #fff5f5;
+            border-color: #ff4757;
+        }
+
+        .cool-notification.success {
+            background: #f0fff4;
+            border-color: #00203F;
+        }
+
+        .cool-notification.show {
+            top: 20px;
+            animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .notification-icon {
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .error-icon {
+            color: #ff4757;
+            display: none;
+        }
+
+        .success-icon {
+            color: #00203F;
+            display: none;
+        }
+
+        .cool-notification.error .error-icon {
+            display: block;
+        }
+
+        .cool-notification.success .success-icon {
+            display: block;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-message {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #2d3436;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                top: -100px;
+                transform: translateX(-50%) scale(0.8);
+            }
+            50% {
+                top: 30px;
+                transform: translateX(-50%) scale(1.1);
+            }
+            100% {
+                top: 20px;
+                transform: translateX(-50%) scale(1);
+            }
+        }
+
+        @keyframes bounceOut {
+            0% {
+                top: 20px;
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                top: -100px;
+                transform: translateX(-50%) scale(0.8);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cool-notification" id="coolNotification">
+        <div class="notification-icon">
+            <i class="ri-error-warning-line error-icon"></i>
+            <i class="ri-checkbox-circle-line success-icon"></i>
+        </div>
+        <div class="notification-content">
+            <p class="notification-message" id="notificationMessage"></p>
+        </div>
+    </div>
+    <div class="auth-container">
+        <h2><i class="ri-user-add-line"></i> Create Account</h2>
+        <p class="tagline">Alchemy - Let's Build Together</p>
+        <form id="signupForm">
+            <div id="registrationFields">
+                <div class="form-group">
+                    <label for="signupUsername">Username</label>
+                    <div class="input-with-icon">
+                        <i class="ri-user-line"></i>
+                        <input type="text" id="signupUsername" name="username" required placeholder="Choose a username">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <div class="input-with-icon">
+                        <i class="ri-mail-line"></i>
+                        <input type="email" id="signupEmail" name="email" required placeholder="Enter your email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <div class="input-with-icon">
+                        <i class="ri-lock-line"></i>
+                        <input type="password" id="signupPassword" name="password" required placeholder="Create a password">
+                    </div>
+                </div>
+            </div>
+
+            <div id="otpContainer" class="otp-container" style="display: none;">
+                <p>Please enter the verification code sent to your email:</p>
+                <div class="input-with-icon">
+                    <i class="ri-shield-keyhole-line"></i>
+                    <input type="text" id="otpInput" maxlength="6" class="otp-input" placeholder="000000">
+                </div>
+            </div>
+
+            <div class="error-message" id="signupError"></div>
+            <button type="submit" id="submitButton" class="auth-button">
+                <i class="ri-user-add-line"></i>
+                Sign Up
+            </button>
+        </form>
+
+        <div class="auth-separator">
+            <span>OR</span>
+        </div>
+
+        <div class="auth-links">
+            <a href="/">
+                <i class="ri-login-circle-line"></i>
+                Already have an account? Login
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('signupForm');
+        const registrationFields = document.getElementById('registrationFields');
+        const otpContainer = document.getElementById('otpContainer');
+        const submitButton = document.getElementById('submitButton');
+        const errorDiv = document.getElementById('signupError');
+
+        let isVerificationStep = false;
+
+        function showNotification(message, type = 'error') {
+            const notification = document.getElementById('coolNotification');
+            const messageEl = document.getElementById('notificationMessage');
+            
+            // Reset classes
+            notification.className = 'cool-notification';
+            notification.classList.add(type);
+            messageEl.textContent = message;
+            
+            // Show notification
+            requestAnimationFrame(() => {
+                notification.classList.add('show');
+            });
+            
+            // Hide notification after delay
+            setTimeout(() => {
+                notification.style.animation = 'bounceOut 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    notification.style.animation = '';
+                }, 500);
+            }, 3000);
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            try {
+                if (!isVerificationStep) {
+                    // First step: Send registration data
+                    const response = await fetch('/auth/signup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            username: document.getElementById('signupUsername').value,
+                            email: document.getElementById('signupEmail').value,
+                            password: document.getElementById('signupPassword').value,
+                        }),
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        registrationFields.style.display = 'none';
+                        otpContainer.style.display = 'block';
+                        submitButton.innerHTML = '<i class="ri-shield-check-line"></i> Verify';
+                        isVerificationStep = true;
+                        showNotification('Verification code sent to your email!', 'success');
+                    } else {
+                        showNotification(data.error || 'Signup failed');
+                    }
+                } else {
+                    // Second step: Verify OTP
+                    const response = await fetch('/auth/verify-otp', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            otp: document.getElementById('otpInput').value
+                        }),
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        showNotification('Registration successful! Redirecting...', 'success');
+                        setTimeout(() => {
+                            window.location.href = '/';
+                        }, 1500);
+                    } else {
+                        showNotification(data.error || 'Invalid verification code');
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('An error occurred. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Alchemy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="/dashboard" class="brand">
+                <i class="ri-magic-line"></i>
+                <span>Alchemy</span>
+            </a>
+        </div>
+        <div class="nav-right">
+            <a href="/projects/add" class="nav-link">
+                <i class="ri-draft-line"></i> Project
+            </a>
+            <a href="/search/skills" class="nav-link">
+                <i class="ri-search-line"></i> Search by Skills
+            </a>
+            <a href="/requests" class="nav-link nav-item-with-count">
+                <i class="ri-notification-4-line"></i> Requests
+                <span class="count-badge" id="requestCount">0</span>
+            </a>
+            <a href="/messages" class="nav-link nav-item-with-count">
+                <i class="ri-message-3-line"></i> Messages
+                <span class="count-badge" id="messageCount">0</span>
+            </a>
+            <a href="/profile" class="nav-link">
+                <i class="ri-user-line"></i> Profile
+            </a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <h1 class="dashboard-title">Welcome <%= user.username %></h1>
+        
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <div class="total-cards">
+                <span class="count" id="projectCount">0</span>
+                <span class="label"><b>Live Projects</b></span>
+            </div>
+        </div>
+
+        <!-- Search and Filters Section -->
+        <div class="filters-section">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search by title...">
+                <button id="searchButton">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <select id="categoryFilter" class="filter">
+                <option value="">All Categories</option>
+                <option value="web">Web Development</option>
+                <option value="mobile">Mobile App</option>
+                <option value="ai">AI/ML</option>
+                <option value="blockchain">Blockchain</option>
+                <option value="game">Game Development</option>
+                <option value="iot">IoT</option>
+                <option value="other">Other</option>
+            </select>
+
+            <select id="teamSizeFilter" class="filter">
+                <option value="">All Team Sizes</option>
+                <option value="1">1 Member</option>
+                <option value="2">2 Members</option>
+                <option value="3">3 Members</option>
+                <option value="4">4 Members</option>
+                <option value="5+">More than 4</option>
+            </select>
+
+            <select id="universityFilter" class="filter">
+                <option value="">All Universities</option>
+                <% universities.forEach(function(uni) { %>
+                    <option value="<%= uni %>"><%= uni %></option>
+                <% }); %>
+            </select>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="project-grid" id="projectsContainer">
+            <!-- Projects will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Application Modal -->
+    <div id="applicationModal" class="modal">
+        <div class="modal-content">
+            <button class="close" onclick="closeApplicationModal()">×</button>
+            <h2><i class="fas fa-paper-plane"></i> Apply for Position</h2>
+            <form id="applicationForm">
+                <input type="hidden" id="projectId" name="projectId">
+                <input type="hidden" id="positionTitleInput" name="positionTitle">
+                
+                <div class="form-group">
+                    <label for="reason">Why do you want to join this team? (250 words max)</label>
+                    <textarea 
+                        id="reason" 
+                        name="reason" 
+                        required 
+                        data-max-words="250"
+                        placeholder="Share your motivation for joining this project..."
+                        onkeyup="updateCharCount(this, 'reasonCount')"
+                    ></textarea>
+                    <div class="char-count" id="reasonCount">0/250 words</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="experience">What is your relevant experience? (250 words max)</label>
+                    <textarea 
+                        id="experience" 
+                        name="experience" 
+                        required
+                        data-max-words="250"
+                        placeholder="Describe your relevant skills and experience..."
+                        onkeyup="updateCharCount(this, 'experienceCount')"
+                    ></textarea>
+                    <div class="char-count" id="experienceCount">0/250 words</div>
+                </div>
+
+                <button type="submit">
+                    <i class="fas fa-paper-plane"></i>
+                    Submit Application
+                </button>
+            </form>
+        </div>
+    </div>
+    <%- include('./partials/footer') %>
+    <script>
+        // Initialize user data from server
+        const user = <%- JSON.stringify(user) %>;
+    </script>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html> 
